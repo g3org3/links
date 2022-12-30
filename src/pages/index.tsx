@@ -32,16 +32,19 @@ const Home: NextPage = () => {
       <main className="flex min-h-screen flex-col gap-4 p-4">
         <form onSubmit={onAddLink}>
         <div className="flex">
-          <input disabled={addLink.isLoading} ref={inputRef} className="p-2 border-2" placeholder="https://google.com..." />
+          <input disabled={addLink.isLoading} ref={inputRef} className="p-2 w-full  border-2" placeholder="https://google.com..." />
           <button type="submit" className="bg-blue-200 p-2">add</button>
         </div>
         </form>
         <hr />
-        <div className="">
+        <div className="flex flex-col gap-2">
           {data?.map(link => (
-            <div  key={link.url}>
-              <a target="_blank" href={link.url} rel="noreferrer">{link.url}</a>
-            </div>
+              <a key={link.url} className="border-2 p-2" target="_blank" href={link.url} rel="noreferrer">
+                <img className="h-36" src={link.image} />
+                {link.desc}
+                <br />
+                {link.url}
+              </a>
           ))}
         </div>
       </main>
