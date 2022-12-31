@@ -1,11 +1,79 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
-  "plugins": ["@typescript-eslint"],
-  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:prettier/recommended"
+  ],
   "rules": {
-    "@typescript-eslint/consistent-type-imports": "warn"
+    "newline-before-return": "error",
+    "import/order": [
+      2,
+      {
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "pathGroups": [
+          {
+            "pattern": "components/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "services/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "utils/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "config/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "pages/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "env/**",
+            "group": "internal"
+          },
+          {
+            "pattern": "server/**",
+            "group": "internal"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": [
+          "internal"
+        ],
+        "groups": [
+          [
+            "builtin",
+            "external"
+          ],
+          "internal",
+          [
+            "parent",
+            "sibling",
+            "index"
+          ]
+        ],
+        "newlines-between": "always"
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 110,
+        "tabWidth": 2,
+        "useTabs": false,
+        "semi": false,
+        "singleQuote": true,
+        "trailingComma": "es5",
+        "bracketSpacing": true,
+        "jsxBracketSameLine": false,
+        "fluid": false,
+        "arrowParens": "always"
+      }
+    ]
   }
 }
