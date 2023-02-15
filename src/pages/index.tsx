@@ -1,5 +1,6 @@
 import { type NextPage } from 'next'
 import Head from 'next/head'
+import Image from 'next/image'
 import { FormEventHandler, useState } from 'react'
 import { useRef } from 'react'
 
@@ -122,7 +123,7 @@ const Home: NextPage = () => {
               href={link.url}
               rel="noreferrer"
             >
-              <img alt="image" className={cs(['h-36', 'rounded-lg'])} src={link.image} />
+              <Image alt="logo" className={cs(['h-36', 'rounded-lg'])} src={link.image} />
               <div className="font-semibold text-slate-700 line-clamp-2">{link.desc}</div>
               <div className="flex-1"></div>
               <div className="font-mono text-xs text-gray-400">{link.url}</div>
