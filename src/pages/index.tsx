@@ -123,7 +123,7 @@ const Home: NextPage = () => {
               href={link.url}
               rel="noreferrer"
             >
-              <Image alt="logo" className={cs(['h-36', 'rounded-lg'])} src={link.image} />
+              <img alt="logo" className={cs(['h-36', 'rounded-lg'])} src={link.image} />
               <div className="font-semibold text-slate-700 line-clamp-2">{link.desc}</div>
               <div className="flex-1"></div>
               <div className="font-mono text-xs text-gray-400">{link.url}</div>
