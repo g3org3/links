@@ -1,6 +1,6 @@
 import { type NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
+// import Image from 'next/image'
 import { FormEventHandler, useState } from 'react'
 import { useRef } from 'react'
 
@@ -47,6 +47,11 @@ const Home: NextPage = () => {
       if (inputRef.current?.value) {
         inputRef.current.value = ''
       }
+      // @ts-ignore
+      if (typeof window?.plausible === 'function') {
+        // @ts-ignore
+        window.plausible('add-link')
+      }
       utils.example.links.invalidate()
     },
     onError(err) {
@@ -66,6 +71,11 @@ const Home: NextPage = () => {
     if (value.includes('http')) {
       addLink.mutate({ url: value })
     } else {
+      // @ts-ignore
+      if (typeof window?.plausible === 'function') {
+        // @ts-ignore
+        window.plausible('search-link')
+      }
       setSearch(value)
     }
   }
