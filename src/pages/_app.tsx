@@ -13,11 +13,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
   return (
     <>
-      <Script
-        defer
-        data-domain="links.jorgeadolfo.com"
-        src="https://plausible.io/js/script.tagged-events.js"
-      />
+      <Script defer data-domain="links.jorgeadolfo.com" src="https://a.jorgeadolfo.com/script.js" />
       <Script id="plausible">{text}</Script>
       <Component {...pageProps} />
     </>
