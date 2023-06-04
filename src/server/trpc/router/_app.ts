@@ -1,5 +1,5 @@
-import { router } from '../trpc'
-// eslint-disable-next-line
+import { router } from 'server/trpc/trpc'
+
 import { exampleRouter } from './example'
 
 export const appRouter = router({

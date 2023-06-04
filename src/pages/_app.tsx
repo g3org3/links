@@ -6,10 +6,8 @@ import { trpc } from '../utils/trpc'
 import '../styles/globals.css'
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  const text =
-    "window.plausible = window.plausible || function(){' '}" +
-    '\n' +
-    '{(window.plausible.q = window.plausible.q || []).push(arguments)}'
+  const text = "window.plausible = window.plausible || function(){' '}" + '\n' // +
+  // '{(window.plausible.q = window.plausible.q || []).push(arguments)}'
 
   return (
     <>
