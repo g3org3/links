@@ -1,7 +1,8 @@
 import { type AppType } from 'next/app'
 import Script from 'next/script'
 
-import { trpc } from '../utils/trpc'
+import Layout from 'components/Layout'
+import { trpc } from 'utils/trpc'
 
 import '../styles/globals.css'
 
@@ -13,7 +14,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <>
       <Script defer data-domain="links.jorgeadolfo.com" src="https://a.jorgeadolfo.com/script.js" />
       <Script id="plausible">{text}</Script>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </>
   )
 }
