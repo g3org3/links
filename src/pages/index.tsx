@@ -1,24 +1,25 @@
 import { useIntersection } from '@mantine/hooks'
+import { useQueryClient } from '@tanstack/react-query'
+import { getQueryKey } from '@trpc/react-query'
 import { type NextPage } from 'next'
-import { useEffect, useRef } from 'react'
 import PocketBase from 'pocketbase'
+import { useEffect, useRef } from 'react'
 
 import LinkCard from 'components/LinkCard'
 import LinkInput from 'components/LinkInput'
 import Loading from 'components/Loading'
 import { trpc } from 'utils/trpc'
-import { useQueryClient } from '@tanstack/react-query'
-import { getQueryKey } from '@trpc/react-query'
 
 const Home: NextPage = () => {
   const queryClient = useQueryClient()
-  const { data, isFetching, isLoading, isFetchingNextPage, fetchNextPage } = trpc.example.linksp.useInfiniteQuery(
-    { limit: 16 },
-    {
-      staleTime: 10 * 1000,
-      getNextPageParam: (lastPage) => lastPage.page + 1,
-    }
-  )
+  const { data, isFetching, isLoading, isFetchingNextPage, fetchNextPage } =
+    trpc.example.linksp.useInfiniteQuery(
+      { limit: 16 },
+      {
+        staleTime: 10 * 1000,
+        getNextPageParam: (lastPage) => lastPage.page + 1,
+      }
+    )
   const lastPostRef = useRef<HTMLElement>(null)
   const linksRef = useRef<HTMLDivElement>(null)
   const { ref, entry } = useIntersection({
@@ -32,8 +33,9 @@ const Home: NextPage = () => {
     const client = new PocketBase('https://pocketbase-production-f6a9.up.railway.app')
     client.realtime.subscribe('tech_links', () => {
       const key = getQueryKey(trpc.example.linksp, { limit: 16 }, 'infinite')
-      queryClient.invalidateQueries(key) 
+      queryClient.invalidateQueries(key)
     })
+
     return () => {
       client.realtime.unsubscribe('tech_links')
     }
@@ -71,7 +73,11 @@ const Home: NextPage = () => {
         {isEndReached && <div className="w-full text-center text-2xl text-slate-400">no more links</div>}
         {isFetchingNextPage && <Loading isFull />}
       </div>
-      {isFetching && !isFetchingNextPage && !isLoading && <div className='fixed bottom-0 left-0 w-[100dvw] bg-slate-600 text-slate-200 text-center animate-pulse'>Fetching...</div>}
+      {isFetching && !isFetchingNextPage && !isLoading && (
+        <div className="fixed bottom-0 left-0 w-[100dvw] animate-pulse bg-slate-600 text-center text-slate-200">
+          Fetching...
+        </div>
+      )}
     </>
   )
 }
