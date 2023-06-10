@@ -4,7 +4,6 @@ import { z } from 'zod'
 import { router, publicProcedure } from 'server/trpc/trpc'
 
 const client = new PocketBase('https://pocketbase-production-f6a9.up.railway.app')
-const delay = (t: number) => new Promise((r) => setTimeout(r, t * 1000))
 
 export const exampleRouter = router({
   hello: publicProcedure.input(z.object({ text: z.string().nullish() }).nullish()).query(({ input }) => {
@@ -12,9 +11,13 @@ export const exampleRouter = router({
       greeting: `Hello ${input?.text ?? 'world'}`,
     }
   }),
-  search: publicProcedure.input(z.object({ query: z.string() })).query(async ({ input }) => {
-    const result = await client.collection('tech_links').getList(1, 10, { filter: `url ~ ${input.query}` })
-    await delay(3)
+  search: publicProcedure.input(z.object({ query: z.string().nullish() })).query(async ({ input }) => {
+    console.log('/search')
+    if (!input.query) return []
+
+    const result = await client
+      .collection('tech_links')
+      .getList(1, 10, { filter: `(url ~ '${input.query}') || (desc ~ '${input.query}')` })
 
     return result.items
   }),

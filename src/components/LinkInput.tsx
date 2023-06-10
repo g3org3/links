@@ -3,18 +3,19 @@ import { getQueryKey } from '@trpc/react-query'
 import { useEffect } from 'react'
 import z from 'zod'
 
+import { useApp } from 'stores/appStore'
 import { clx } from 'utils/clx'
 import { getFromData } from 'utils/form'
 import { trpc } from 'utils/trpc'
 
 const schema = z.object({
-  search: z.string().min(1),
+  search: z.string(),
 })
 
 export default function LinkInput() {
   const queryClient = useQueryClient()
+  const setSearch = useApp((s) => s.setSearch)
   const key = getQueryKey(trpc.example.linksp, { limit: 16 }, 'infinite')
-
   const { mutateAsync, isLoading, isError } = trpc.example.addLink.useMutation({
     async onMutate() {
       await queryClient.cancelQueries(key)
@@ -28,7 +29,11 @@ export default function LinkInput() {
     const { data, reset } = getFromData(schema, e)
     const value = data?.search
 
-    if (!value) return
+    if (!value) {
+      setSearch(null)
+
+      return
+    }
 
     if (value.includes('http')) {
       mutateAsync({ url: value }).then(() => reset())
@@ -38,7 +43,7 @@ export default function LinkInput() {
         // @ts-ignore
         window.plausible('search-link')
       }
-      reset()
+      setSearch(value)
     }
   }
 
