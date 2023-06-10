@@ -80,6 +80,9 @@ const Home: NextPage = () => {
             cardRef={i === links.length - 1 && !isEndReached && !search ? ref : null}
           />
         ))}
+        {!!search && links.length === 0 && (
+          <div className="w-full text-center text-2xl text-slate-400">no search results</div>
+        )}
         {isEndReached && <div className="w-full text-center text-2xl text-slate-400">no more links</div>}
         {isFetchingNextPage && <Loading isFull />}
       </div>
