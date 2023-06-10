@@ -12,6 +12,7 @@ import { trpc } from 'utils/trpc'
 
 const Home: NextPage = () => {
   const queryClient = useQueryClient()
+  const key = getQueryKey(trpc.example.linksp, { limit: 16 }, 'infinite')
   const { data, isFetching, isLoading, isFetchingNextPage, fetchNextPage } =
     trpc.example.linksp.useInfiniteQuery(
       { limit: 16 },
@@ -32,7 +33,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     const client = new PocketBase('https://pocketbase-production-f6a9.up.railway.app')
     client.realtime.subscribe('tech_links', () => {
-      const key = getQueryKey(trpc.example.linksp, { limit: 16 }, 'infinite')
       queryClient.invalidateQueries(key)
     })
 
@@ -51,7 +51,7 @@ const Home: NextPage = () => {
     if (!isLoading && isFetchingNextPage && linksRef.current) {
       linksRef.current.scrollTop = linksRef.current.scrollHeight
     }
-  }, [isLoading, isFetchingNextPage, linksRef.current])
+  }, [isLoading, isFetchingNextPage])
 
   const links = data?.pages.flatMap((page) => page.items) ?? []
 

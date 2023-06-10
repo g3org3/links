@@ -1,5 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
+import { useEffect } from 'react'
 import z from 'zod'
 
 import { clx } from 'utils/clx'
@@ -12,12 +13,17 @@ const schema = z.object({
 
 export default function LinkInput() {
   const queryClient = useQueryClient()
+  const key = getQueryKey(trpc.example.linksp, { limit: 16 }, 'infinite')
+
   const { mutateAsync, isLoading, isError } = trpc.example.addLink.useMutation({
+    async onMutate() {
+      await queryClient.cancelQueries(key)
+    },
     onSettled() {
-      const key = getQueryKey(trpc.example.linksp, { limit: 16 }, 'infinite')
       queryClient.invalidateQueries(key)
     },
   })
+
   const onAddLink: React.FormEventHandler<HTMLFormElement> = (e) => {
     const { data, reset } = getFromData(schema, e)
     const value = data?.search
@@ -35,6 +41,18 @@ export default function LinkInput() {
       reset()
     }
   }
+
+  useEffect(() => {
+    if (isLoading) {
+      window.onbeforeunload = () => 'Are you sure you want to close the window?'
+    } else {
+      window.onbeforeunload = () => {}
+    }
+
+    return () => {
+      window.onbeforeunload = () => {}
+    }
+  }, [isLoading])
 
   return (
     <form
