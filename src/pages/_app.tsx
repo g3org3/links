@@ -1,3 +1,4 @@
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { type AppType } from 'next/app'
 import Script from 'next/script'
 
@@ -14,6 +15,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <>
       <Script defer data-domain="links.jorgeadolfo.com" src="https://a.jorgeadolfo.com/script.js" />
       <Script id="plausible">{text}</Script>
+      <ReactQueryDevtools initialIsOpen />
       <Layout>
         <Component {...pageProps} />
       </Layout>

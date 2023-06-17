@@ -8,7 +8,23 @@ export default function LinkCard(props: Props) {
   return (
     <a
       ref={cardRef}
-      className="group flex w-full flex-col items-center rounded-lg bg-slate-200 p-6 shadow-lg transition-colors duration-300 hover:bg-slate-50 dark:bg-slate-700 dark:hover:bg-slate-600 md:max-w-sm"
+      className="
+      bg-white
+      dark:bg-slate-700
+      dark:hover:bg-slate-600
+      duration-300
+      flex
+      flex-col
+      group
+      hover:bg-slate-50
+      items-center
+      md:max-w-sm
+      p-6
+      rounded-lg
+      shadow-lg
+      transition-all
+      w-full
+      "
       target="_blank"
       href={link.url}
       rel="noreferrer"

@@ -64,7 +64,7 @@ export default function LinkInput() {
       onSubmit={onAddLink}
       className={clx(
         { 'bg-red-800': isError },
-        'bg-slate-600 p-6 shadow-md dark:bg-slate-600 dark:shadow-slate-700'
+        'bg-white dark:bg-slate-600 fixed z-50 top-0 left-0 w-[100dvw] bg-opacity-50 backdrop-blur p-6'
       )}
     >
       <input

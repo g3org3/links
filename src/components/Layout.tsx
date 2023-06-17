@@ -187,7 +187,24 @@ export default function Layout({ children }: { children: JSX.Element }) {
           href="splash_screens/8.3__iPad_Mini_portrait.png"
         />
       </Head>
-      <main className="flex h-[100dvh] flex-col overflow-auto bg-slate-300 dark:bg-slate-800">
+      <main className="flex h-[100dvh] flex-col overflow-auto">
+        <div className="bg-white dark:bg-slate-800 absolute top-0 left-0 w-full h-full -z-50" />
+        <div
+          className="
+          absolute
+          top-[0px]
+          left-0
+          w-full
+          h-[90%]
+          bg-gradient-to-br
+          from-blue-500
+          to-[#07ff00]
+          filter
+          blur-[100px]
+          opacity-40
+          dark:opacity-70
+          -z-40
+          " />
         {children}
       </main>
     </>
