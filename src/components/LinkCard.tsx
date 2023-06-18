@@ -9,21 +9,21 @@ export default function LinkCard(props: Props) {
     <a
       ref={cardRef}
       className="
-      bg-white
-      dark:bg-slate-700
-      dark:hover:bg-slate-600
-      duration-300
-      flex
-      flex-col
       group
-      hover:bg-slate-50
+      flex
+      w-full
+      flex-col
       items-center
-      md:max-w-sm
-      p-6
       rounded-lg
+      bg-white
+      p-6
       shadow-lg
       transition-all
-      w-full
+      duration-300
+      hover:bg-slate-50
+      dark:bg-slate-700
+      dark:hover:bg-slate-600
+      md:max-w-sm
       "
       target="_blank"
       href={link.url}

@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import z from 'zod'
 
 import { useApp } from 'stores/appStore'
@@ -14,6 +14,7 @@ const schema = z.object({
 
 export default function LinkInput() {
   const queryClient = useQueryClient()
+  const [isSearching, setIsSearching] = useState(false)
   const setSearch = useApp((s) => s.setSearch)
   const key = getQueryKey(trpc.example.linksp, { limit: 16 }, 'infinite')
   const { mutateAsync, isLoading, isError } = trpc.example.addLink.useMutation({
@@ -64,15 +65,20 @@ export default function LinkInput() {
       onSubmit={onAddLink}
       className={clx(
         { 'bg-red-800': isError },
-        'bg-white dark:bg-slate-600 fixed z-50 top-0 left-0 w-[100dvw] bg-opacity-50 backdrop-blur p-6'
+        'fixed left-0 top-0 z-50 flex w-[100dvw] flex-col bg-white bg-opacity-40 p-2 backdrop-blur dark:bg-slate-600'
       )}
     >
-      <input
-        disabled={isLoading}
-        name="search"
-        className="w-full rounded-lg p-2 text-xl focus:shadow-md dark:bg-slate-700 dark:text-slate-200"
-        placeholder="http..."
-      />
+      <div className="flex gap-2">
+        <input
+          disabled={isLoading}
+          name="search"
+          className={clx(
+            { hidden: !isSearching },
+            'container mx-auto w-full rounded-lg p-2 text-xl focus:shadow-md dark:bg-slate-700 dark:text-slate-200'
+          )}
+          placeholder="add new link with http... or search"
+        />
+      </div>
     </form>
   )
 }

@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
         <link rel="manifest" href="/manifest.json" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="rgb(71, 85, 105)" />
+        <meta name="theme-color" content="rgb(255, 255, 255)" />
 
         <link
           rel="apple-touch-startup-image"
@@ -188,23 +188,24 @@ export default function Layout({ children }: { children: JSX.Element }) {
         />
       </Head>
       <main className="flex h-[100dvh] flex-col overflow-auto">
-        <div className="bg-white dark:bg-slate-800 absolute top-0 left-0 w-full h-full -z-50" />
+        <div className="absolute left-0 top-0 -z-50 h-full w-full bg-white dark:bg-slate-800" />
         <div
           className="
           absolute
-          top-[0px]
           left-0
-          w-full
-          h-[90%]
-          bg-gradient-to-br
-          from-blue-500
-          to-[#07ff00]
-          filter
-          blur-[100px]
-          opacity-40
-          dark:opacity-70
+          top-0
           -z-40
-          " />
+          h-[90%]
+          w-full
+          bg-gradient-to-br
+          from-blue-700
+          to-[#07ff00]
+          opacity-40
+          blur-[100px]
+          filter
+          dark:opacity-70
+          "
+        />
         {children}
       </main>
     </>

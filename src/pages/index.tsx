@@ -69,7 +69,7 @@ const Home: NextPage = () => {
     <>
       <LinkInput />
       <div
-        className="flex flex-1 flex-wrap items-start justify-around gap-4 overflow-auto p-6 shadow-inner pt-[120px]"
+        className="flex flex-1 flex-wrap items-start justify-around gap-4 overflow-auto p-6 pt-[120px] shadow-inner"
         ref={linksRef}
       >
         {(isLoading || isSearching) && new Array(16).fill(0).map((_, x) => <Loading key={x} />)}
@@ -81,7 +81,7 @@ const Home: NextPage = () => {
           />
         ))}
         {!!search && links.length === 0 && (
-          <div className="w-full mt-20 text-center text-3xl text-white opacity-75">no search results</div>
+          <div className="mt-20 w-full text-center text-3xl text-white opacity-75">no search results</div>
         )}
         {isEndReached && <div className="w-full text-center text-2xl text-slate-400">no more links</div>}
         {isFetchingNextPage && <Loading isFull />}
