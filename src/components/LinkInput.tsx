@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import z from 'zod'
 
 import { useApp } from 'stores/appStore'
@@ -14,7 +14,6 @@ const schema = z.object({
 
 export default function LinkInput() {
   const queryClient = useQueryClient()
-  const [isSearching, setIsSearching] = useState(false)
   const setSearch = useApp((s) => s.setSearch)
   const key = getQueryKey(trpc.example.linksp, { limit: 16 }, 'infinite')
   const { mutateAsync, isLoading, isError } = trpc.example.addLink.useMutation({
@@ -73,7 +72,7 @@ export default function LinkInput() {
           disabled={isLoading}
           name="search"
           className={clx(
-            { hidden: !isSearching },
+            {},
             'container mx-auto w-full rounded-lg p-2 text-xl focus:shadow-md dark:bg-slate-700 dark:text-slate-200'
           )}
           placeholder="add new link with http... or search"

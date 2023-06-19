@@ -12,7 +12,6 @@ export const exampleRouter = router({
     }
   }),
   search: publicProcedure.input(z.object({ query: z.string().nullish() })).query(async ({ input }) => {
-    console.log('/search')
     if (!input.query) return []
 
     const result = await client
