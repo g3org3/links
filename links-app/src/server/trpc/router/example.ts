@@ -14,6 +14,9 @@ export const exampleRouter = router({
   search: publicProcedure.input(z.object({ query: z.string().nullish() })).query(async ({ input }) => {
     if (!input.query) return []
 
+    // console.log(await client.collection('users').listAuthMethods())
+    // const u = client.collection('users')
+
     const result = await client
       .collection('tech_links')
       .getList(1, 10, { filter: `(url ~ '${input.query}') || (desc ~ '${input.query}')` })
