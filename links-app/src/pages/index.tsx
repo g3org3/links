@@ -10,7 +10,6 @@ import LinkInput from 'components/LinkInput'
 import Loading from 'components/Loading'
 import { useApp } from 'stores/appStore'
 import { trpc } from 'utils/trpc'
-import Auth from 'components/Auth'
 
 const Home: NextPage = () => {
   const queryClient = useQueryClient()
@@ -69,7 +68,6 @@ const Home: NextPage = () => {
   return (
     <>
       <LinkInput />
-      <Auth />
       <div
         className="flex flex-1 flex-wrap items-start justify-around gap-4 overflow-auto p-6 pt-[120px] shadow-inner"
         ref={linksRef}
