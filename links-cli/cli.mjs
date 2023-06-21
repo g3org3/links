@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // @ts-check
+import chalk from 'chalk'
 import PocketBase, { BaseAuthStore } from 'pocketbase'
 import ora from 'ora'
 import { v4 as uuid } from 'uuid'
@@ -9,10 +10,11 @@ import fs from 'fs/promises'
 import os from 'os'
 
 process.env.NODE_NO_WARNINGS = "1"
+
 /**
 * @param {number} t in seconds
 */
-function delay (t) {
+function delay(t) {
   return new Promise(r => setTimeout(r, t * 1000))
 }
 
@@ -22,11 +24,12 @@ async function readConfig() {
   let host = "http://localhost:8090"
   let clientid = "<replaceme>"
   let isRCPresent = false
-  try  {
+
+  try {
     const check = await fs.stat(rcfilepath)
     isRCPresent = check.isFile()
-  } catch {}
-  
+  } catch { }
+
   if (!isRCPresent) {
     try {
       await fs.writeFile(rcfilepath, `host=${host}\nclientid=${clientid}\n`)
@@ -90,6 +93,7 @@ async function waitTilAuthenticated(client, host) {
   let hint = {}
 
   const spinner = ora('waiting, you have 1 min.').start()
+
   while (i <= timeout && !hint.authid) {
     await delay(1)
     const pubtoken = await client.collection('pubtokens').getList(1, 1, { clientid })
@@ -99,16 +103,19 @@ async function waitTilAuthenticated(client, host) {
   spinner.stop()
 
   const nextclientid = uuid()
+
   try {
     await client.collection('pubtokens').delete(hint.id, { clientid })
   } catch {
     console.log('could not delete')
   }
+
   try {
     await client.collection('pubtokens').create({
       clientid: nextclientid,
       authid: hint.authid,
       name: hostname,
+      user: hint.user,
       active: true,
     }, { clientid: nextclientid })
 
@@ -149,13 +156,18 @@ async function main() {
 
   if (args.search) {
     const spinner = ora(`searching links with "${args.search}"`).start()
-    const links = await client.collection('links').getList(1, 10, { filter: `url ~ "${args.search}"` })
-    spinner.succeed("Results:")
+    const links = await client.collection('links').getList(1, 10, { filter: `url ~ "${args.search}" || desc ~ "${args.search}" ` })
+    spinner.succeed("Results:\n")
     for (const link of links.items) {
-      console.log('-', link.url)
+      console.log('---')
+      console.log(chalk.blue(link.url))
+      console.log(chalk.yellow(link.desc))
     }
+    console.log('---')
 
   }
+
+  console.log("")
 }
 
 

@@ -18,7 +18,7 @@ export const exampleRouter = router({
     // const u = client.collection('users')
 
     const result = await client
-      .collection('tech_links')
+      .collection('links')
       .getList(1, 10, { filter: `(url ~ '${input.query}') || (desc ~ '${input.query}')` })
 
     return result.items
@@ -32,13 +32,13 @@ export const exampleRouter = router({
     )
     .query(async ({ input }) => {
       const links = await client
-        .collection('tech_links')
+        .collection('links')
         .getList(input.cursor || 1, input.limit || 12, { sort: '-created' })
 
       return links
     }),
   links: publicProcedure.query(async () => {
-    const records = await client.collection('tech_links').getFullList(200, {
+    const records = await client.collection('links').getFullList(200, {
       sort: '-created',
     })
 
@@ -57,7 +57,7 @@ export const exampleRouter = router({
       const [image] = getMetaTagContents(images[0] || '')
       const data = { url: input.url, desc, image: image && image.startsWith('/') ? input.url + image : image }
 
-      await client.collection('tech_links').create(data)
+      await client.collection('links').create(data)
     } catch (err) {
       // console.error(err)
       throw err

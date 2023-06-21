@@ -10,6 +10,7 @@ import LinkInput from 'components/LinkInput'
 import Loading from 'components/Loading'
 import { useApp } from 'stores/appStore'
 import { trpc } from 'utils/trpc'
+import AuthComponent from 'components/Auth'
 
 const Home: NextPage = () => {
   const queryClient = useQueryClient()

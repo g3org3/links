@@ -21,7 +21,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "next": "13.4.4",
-    "pocketbase": "^0.9.1",
+    "pocketbase": "^0.15.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "superjson": "1.12.3",
