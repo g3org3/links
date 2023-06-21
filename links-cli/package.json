@@ -1,7 +1,7 @@
 {
   "name": "g3org3-links-cli",
   "private": false,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "preferGlobal": true,
   "main": "./cli.mjs",
   "scripts": {},
@@ -13,6 +13,7 @@
     "./package.json"
   ],
   "dependencies": {
+    "@inquirer/prompts": "^2.1.1",
     "argparse": "^2.0.1",
     "chalk": "^5.2.0",
     "execa": "^7.1.1",
