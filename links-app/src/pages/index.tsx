@@ -5,12 +5,12 @@ import { type NextPage } from 'next'
 import PocketBase from 'pocketbase'
 import { useEffect, useRef } from 'react'
 
+import AuthComponent from 'components/Auth'
 import LinkCard from 'components/LinkCard'
 import LinkInput from 'components/LinkInput'
 import Loading from 'components/Loading'
 import { useApp } from 'stores/appStore'
 import { trpc } from 'utils/trpc'
-import AuthComponent from 'components/Auth'
 
 const Home: NextPage = () => {
   const queryClient = useQueryClient()
