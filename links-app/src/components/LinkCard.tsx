@@ -35,7 +35,7 @@ export default function LinkCard(props: Props) {
         src={link.image || 'https://api.dicebear.com/6.x/shapes/svg?seed=' + link.url}
       />
       <div className="line-clamp-2 pt-2 font-semibold text-slate-700 dark:text-slate-300">
-        {link.desc || link.url}
+        {link.title || link.desc || link.url}
       </div>
       <div className="flex-1"></div>
       <div className="font-mono text-xs text-gray-400 dark:text-slate-400">{link.url}</div>

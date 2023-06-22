@@ -46,17 +46,16 @@ export const exampleRouter = router({
   }),
   addLink: publicProcedure.input(z.object({ url: z.string() })).mutation(async ({ input }) => {
     try {
-      const res = await fetch(input.url)
-      const text = await res.text()
-      const metaTags = getMetaTags(text)
-      const descriptions = metaTags.filter((text) => text.includes('description'))
-      const images = metaTags.filter((text) => text.includes(':image"'))
-
-      // console.log({ images, descriptions })
-      const [desc] = getMetaTagContents(descriptions[0] || '')
-      const [image] = getMetaTagContents(images[0] || '')
-      const data = { url: input.url, desc, image: image && image.startsWith('/') ? input.url + image : image }
-
+      const { title, desc, image, tags } = await scrappeUrl(input.url)
+      const uid = 'apa1tv9kas4s3k2'
+      const data = {
+        title,
+        tags,
+        author: uid,
+        url: input.url,
+        desc,
+        image: image && image.startsWith('/') ? input.url + image : image,
+      }
       await client.collection('links').create(data)
     } catch (err) {
       // console.error(err)
@@ -64,6 +63,37 @@ export const exampleRouter = router({
     }
   }),
 })
+
+/**
+ * @param {string} url
+ */
+async function scrappeUrl(url: string) {
+  const res = await fetch(url)
+  const text = await res.text()
+  const metaTags = getMetaTags(text)
+  const keywords = metaTags.filter((text) => text.includes('keywords'))
+  const descriptions = metaTags.filter((text) => text.includes('description'))
+  const images = metaTags.filter((text) => text.includes(':image"'))
+
+  // console.log({ images, descriptions })
+  const [desc] = getMetaTagContents(descriptions[0] || '')
+  const [image] = getMetaTagContents(images[0] || '')
+  const [tags] = getMetaTagContents(keywords[0] || '')
+  const [title] = getTitle(text)
+  const domain = url.split('/')[2]
+
+  return {
+    desc,
+    image,
+    title,
+    tags: (tags || '')
+      .split(',')
+      .map((x) => x.trim())
+      .filter(Boolean)
+      // @ts-ignore
+      .concat([domain]),
+  }
+}
 
 function getMetaTagContents(html: string) {
   const regex = /<meta[^>]*content="([^"]*)"[^>]*>/gi
@@ -86,6 +116,19 @@ function getMetaTags(html: string) {
   // Find all matches
   while ((match = regex.exec(html)) !== null) {
     matches.push(match[0])
+  }
+
+  return matches
+}
+
+function getTitle(html: string) {
+  const regex = /<title>([^<]+)<\/title>/gi
+  const matches = []
+  let match
+
+  // Find all matches
+  while ((match = regex.exec(html)) !== null) {
+    matches.push(match[1])
   }
 
   return matches
