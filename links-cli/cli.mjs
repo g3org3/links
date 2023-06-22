@@ -154,10 +154,10 @@ async function main() {
     for (const key of Object.keys(details)) {
       console.log(`${chalk.blue(key)}:`, details[key])
     }
-    
+
     const tagstr = await input({ message: 'Enter tags [,]:' })
     const tags = tagstr.split(',').filter(Boolean).concat([newlink.split('/')[2]]).concat(details.tags)
-    
+
     console.log('create new link', newlink, 'with tags:', tags)
     const spinner = ora('creating new link').start()
 
@@ -178,9 +178,9 @@ async function main() {
     spinner.succeed("Results:\n")
     for (const link of links.items) {
       console.log('---')
-      console.log(chalk.yellow(link.title||link.desc))
+      console.log(chalk.yellow(link.title || link.desc))
       console.log(chalk.blue(link.url))
-      console.log(chalk.red(link.tags.map(t => '#'+t).join(' ')))
+      console.log(chalk.red(link.tags.map(t => '#' + t).join(' ')))
     }
     console.log('---')
 
@@ -206,7 +206,7 @@ async function scrappeUrl(url) {
   const [tags] = getMetaTagContents(keywords[0] || '')
   const [title] = getTitle(text)
 
-  return { desc, image, title, tags: (tags||'').split(',').map(x => x.trim()).filter(Boolean) }
+  return { desc, image, title, tags: (tags || '').split(',').map(x => x.trim()).filter(Boolean) }
 }
 
 
