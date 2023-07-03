@@ -9,8 +9,18 @@ import { $ } from 'execa'
 import fs from 'fs/promises'
 import os from 'os'
 import { input } from '@inquirer/prompts'
+import fetch from 'node-fetch'
+import { HttpsProxyAgent } from 'https-proxy-agent'
 
-process.env.NODE_NO_WARNINGS = "1"
+// @ts-ignore
+global.fetch = async (url, options) => {
+  if (process.env.https_proxy) {
+    // @ts-ignore
+    options.agent = new HttpsProxyAgent(process.env.https_proxy)
+  }
+  // @ts-ignore
+  return fetch(url, options)
+}
 
 /**
 * @param {number} t in seconds
@@ -131,11 +141,10 @@ async function waitTilAuthenticated(client, host) {
 
 async function main() {
   const parser = new ArgumentParser({ description: 'Links cli' })
-  parser.add_argument('-s', { dest: 'search', help: 'search your links' })
-  parser.add_argument('--new', { dest: 'newlink', help: 'add a new link', action: 'store_true' })
+  parser.add_argument('search', { help: 'search your links' })
   let args = parser.parse_args()
 
-  if (!args.newlink && !args.search) {
+  if (args.help) {
     parser.print_help()
     process.exit(0)
   }
@@ -148,7 +157,7 @@ async function main() {
     process.exit(1)
   }
 
-  if (args.newlink) {
+  if (args.search == 'new') {
     const newlink = await input({ message: 'Enter your link:' })
     const details = await scrappeUrl(newlink)
     for (const key of Object.keys(details)) {
@@ -171,18 +180,18 @@ async function main() {
     let links = null
     if (args.search.includes('tag:')) {
       const tag = args.search.slice(4)
-      links = await client.collection('links').getList(1, 10, { filter: `tags:each ~ "${tag}"` })
+      links = await client.collection('links').getList(1, 10, { filter: `tags:each ~ "${tag}%"` })
     } else {
       links = await client.collection('links').getList(1, 10, { filter: `url ~ "${args.search}" || desc ~ "${args.search}" ` })
     }
-    spinner.succeed("Results:\n")
+    spinner.succeed("✨")
     for (const link of links.items) {
-      console.log('---')
-      console.log(chalk.yellow(link.title || link.desc))
-      console.log(chalk.blue(link.url))
-      console.log(chalk.red(link.tags.map(t => '#' + t).join(' ')))
+      console.log('')
+      console.log('🔗', chalk.yellow(link.title || link.desc))
+      console.log('   -', chalk.blue(link.url))
+      console.log('   ', chalk.red(link.tags.map((t) => '#' + t).join(' ')))
     }
-    console.log('---')
+    console.log('')
 
   }
 
@@ -258,5 +267,8 @@ function getMetaTags(html) {
   return matches
 }
 
-
-await main()
+try {
+  await main()
+} catch (e) {
+  console.log('error:', e.message)
+}
