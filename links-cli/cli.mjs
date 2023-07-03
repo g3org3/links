@@ -180,7 +180,7 @@ async function main() {
     let links = null
     if (args.search.includes('tag:')) {
       const tag = args.search.slice(4)
-      links = await client.collection('links').getList(1, 10, { filter: `tags:each ~ "${tag}%"` })
+      links = await client.collection('links').getList(1, 10, { filter: `tags:each ~ "${tag}"` })
     } else {
       links = await client.collection('links').getList(1, 10, { filter: `url ~ "${args.search}" || desc ~ "${args.search}" ` })
     }
