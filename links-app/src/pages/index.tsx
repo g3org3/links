@@ -14,6 +14,9 @@ import { trpc } from 'utils/trpc'
 const Home: NextPage = () => {
   const queryClient = useQueryClient()
   const search = useApp((s) => s.search)
+  const addLinks = useApp((s) => s.addLinks)
+  const addPage = useApp((s) => s.addPage)
+  const storelinks = useApp((s) => s.links)
   const key = getQueryKey(trpc.example.linksp, { limit: 16 }, 'infinite')
   const { isFetching: isSearching, data: searchResults } = trpc.example.search.useQuery(
     { query: search },
@@ -25,6 +28,11 @@ const Home: NextPage = () => {
       {
         staleTime: 10 * 1000,
         getNextPageParam: (lastPage) => lastPage.page + 1,
+        onSuccess(linksbypage) {
+          const links = linksbypage.pages.at(-1)
+          if (links?.items)
+            addLinks(links.items)
+        }
       }
     )
   const lastPostRef = useRef<HTMLElement>(null)
@@ -49,17 +57,13 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (!isEndReached && entry?.isIntersecting) {
+      addPage()
       fetchNextPage()
     }
   }, [entry?.isIntersecting, isEndReached])
 
-  useEffect(() => {
-    if (!isLoading && isFetchingNextPage && linksRef.current) {
-      linksRef.current.scrollTop = linksRef.current.scrollHeight
-    }
-  }, [isLoading, isFetchingNextPage])
-
-  let links = data?.pages.flatMap((page) => page.items) ?? []
+  // let links = data?.pages.flatMap((page) => page.items) ?? []
+  let links = storelinks
 
   if (search) {
     links = searchResults ?? []
@@ -84,7 +88,7 @@ const Home: NextPage = () => {
           <div className="mt-20 w-full text-center text-3xl text-white opacity-75">no search results</div>
         )}
         {isEndReached && <div className="w-full text-center text-2xl text-slate-400">no more links</div>}
-        {isFetchingNextPage && <Loading isFull />}
+        {/* {isFetchingNextPage && <Loading isFull />} */}
       </div>
       {isFetching && !isFetchingNextPage && !isLoading && (
         <div className="fixed bottom-0 left-0 w-[100dvw] animate-pulse bg-slate-600 text-center text-slate-200">

@@ -26,14 +26,14 @@ export const exampleRouter = router({
   linksp: publicProcedure
     .input(
       z.object({
-        limit: z.number().min(1).max(24).nullish(),
+        limit: z.number().min(1).max(32),
         cursor: z.number().nullish(),
       })
     )
     .query(async ({ input }) => {
       const links = await client
         .collection('links')
-        .getList(input.cursor || 1, input.limit || 12, { sort: '-created' })
+        .getList(!input.cursor ? 1 : input.cursor + 1, !input.cursor ? input.limit * 2 : input.limit, { sort: '-created' })
 
       return links
     }),
