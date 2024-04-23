@@ -20,7 +20,7 @@ const Home: NextPage = () => {
   const key = getQueryKey(trpc.example.linksp, { limit: 16 }, 'infinite')
   const { isFetching: isSearching, data: searchResults } = trpc.example.search.useQuery(
     { query: search },
-    { enabled: !!search, staleTime: 10 * 1000 }
+    { enabled: !!search, staleTime: 10 * 1000 },
   )
   const { data, isFetching, isLoading, isFetchingNextPage, fetchNextPage } =
     trpc.example.linksp.useInfiniteQuery(
@@ -45,13 +45,13 @@ const Home: NextPage = () => {
   const isEndReached = data?.pages && data?.pages[0]?.totalPages === data?.pages.length
 
   useEffect(() => {
-    const client = new PocketBase('https://pocketbase-production-f6a9.up.railway.app')
+    const client = new PocketBase('https://pb.jorgeadolfo.com')
     client.realtime.subscribe('tech_links', () => {
       queryClient.invalidateQueries(key)
     })
 
     return () => {
-      // client.realtime.unsubscribe('tech_links')
+      client.realtime.unsubscribe('tech_links')
     }
   }, [])
 

@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { clx } from 'utils/clx'
 import { getFromData } from 'utils/form'
 
-const url = 'https://pocketbase-production-f6a9.up.railway.app'
+const url = 'https://pb.jorgeadolfo.com'
 
 export default function AuthComponent() {
   const [_, setProfile] = useState<RecordAuthResponse<Record> | undefined>(undefined)

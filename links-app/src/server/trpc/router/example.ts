@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { router, publicProcedure } from 'server/trpc/trpc'
 
-const client = new PocketBase('https://pocketbase-production-f6a9.up.railway.app')
+const client = new PocketBase('https://pb.jorgeadolfo.com')
 
 export const exampleRouter = router({
   hello: publicProcedure.input(z.object({ text: z.string().nullish() }).nullish()).query(({ input }) => {
