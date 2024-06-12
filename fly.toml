@@ -1,5 +1,4 @@
 # fly.toml file generated for g3org3-links on 2023-02-15T10:54:30+01:00
-
 app = "g3org3-links"
 kill_signal = "SIGINT"
 kill_timeout = 5

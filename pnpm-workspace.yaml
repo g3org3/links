@@ -1,3 +1,4 @@
-packagaes:
+packages:
   - links-app
   - links-cli
+  - todos-cli
