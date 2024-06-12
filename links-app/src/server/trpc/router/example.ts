@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { router, publicProcedure } from 'server/trpc/trpc'
 
-const client = new PocketBase('https://pb.jorgeadolfo.com')
+const client = new PocketBase('https://pb3.jorgeadolfo.com')
 
 export const exampleRouter = router({
   hello: publicProcedure.input(z.object({ text: z.string().nullish() }).nullish()).query(({ input }) => {
@@ -17,9 +17,9 @@ export const exampleRouter = router({
     // console.log(await client.collection('users').listAuthMethods())
     // const u = client.collection('users')
 
-    const result = await client
-      .collection('links')
-      .getList(1, 10, { filter: `(url ~ '${input.query}') || (desc ~ '${input.query}')` })
+    const result = await client.collection('links').getList(1, 10, {
+      filter: `(url ~ '${input.query}') || (desc ~ '${input.query}')`,
+    })
 
     return result.items
   }),
@@ -33,7 +33,9 @@ export const exampleRouter = router({
     .query(async ({ input }) => {
       const links = await client
         .collection('links')
-        .getList(!input.cursor ? 1 : input.cursor + 1, !input.cursor ? input.limit * 2 : input.limit, { sort: '-created' })
+        .getList(!input.cursor ? 1 : input.cursor + 1, !input.cursor ? input.limit * 2 : input.limit, {
+          sort: '-created',
+        })
 
       return links
     }),
@@ -47,7 +49,7 @@ export const exampleRouter = router({
   addLink: publicProcedure.input(z.object({ url: z.string() })).mutation(async ({ input }) => {
     try {
       const { title, desc, image, tags } = await scrappeUrl(input.url)
-      const uid = 'apa1tv9kas4s3k2'
+      const uid = '9jlds13a5q77zq5'
       const data = {
         title,
         tags,
@@ -58,7 +60,7 @@ export const exampleRouter = router({
       }
       await client.collection('links').create(data)
     } catch (err) {
-      // console.error(err)
+      console.error(err)
       throw err
     }
   }),

@@ -6,7 +6,7 @@ export interface AppStore {
   setSearch: (q: string | null) => void
   links: Record[]
   nextPage: Record[]
-  addLinks: (l: Record[]) => void
+  addLinks: (l: Record[], isDiff?: boolean) => void
   addPage: () => void
   init: boolean
 }
@@ -15,18 +15,33 @@ export const useApp = create<AppStore>((set) => ({
   search: null,
   init: true,
   setSearch: (q) => set({ search: q === '' ? null : q }),
-  addLinks: (nextlinks) => {
-    set(s => ({
-      init: false,
-      links: s.init ? nextlinks.slice(0, 16) : s.links,
-      nextPage: s.init ? nextlinks.slice(16) : nextlinks
-    }))
+  addLinks: (nextlinks, isDiff) => {
+    set(s => {
+      if (s.init) {
+        return {
+          init: false,
+          links: nextlinks.slice(0, 16),
+          nextPage: nextlinks.slice(16),
+        }
+      }
+      return {
+        init: false,
+        links: s.links,
+        nextPage: nextlinks,
+      }
+    })
   },
   addPage: () => {
-    set(s => ({
-      links: s.init ? [] : s.links.concat(s.nextPage),
-      nextPage: s.init ? [] : s.nextPage,
-    }))
+    set(s => {
+      if (s.init) {
+        return { links: [], nextPage: [] }
+      }
+
+      return {
+        links: s.links.concat(s.nextPage),
+        nextPage: s.nextPage,
+      }
+    })
   },
   links: [],
   nextPage: [],
