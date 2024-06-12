@@ -15,12 +15,14 @@ const schema = z.object({
 export default function LinkInput() {
   const queryClient = useQueryClient()
   const setSearch = useApp((s) => s.setSearch)
+  const resetStore = useApp((s) => s.reset)
   const key = getQueryKey(trpc.example.linksp, { limit: 16 }, 'infinite')
   const { mutateAsync, isLoading, isError } = trpc.example.addLink.useMutation({
     async onMutate() {
       await queryClient.cancelQueries(key)
     },
     onSettled() {
+      resetStore()
       queryClient.invalidateQueries(key)
     },
   })
@@ -51,11 +53,11 @@ export default function LinkInput() {
     if (isLoading) {
       window.onbeforeunload = () => 'Are you sure you want to close the window?'
     } else {
-      window.onbeforeunload = () => {}
+      window.onbeforeunload = () => { }
     }
 
     return () => {
-      window.onbeforeunload = () => {}
+      window.onbeforeunload = () => { }
     }
   }, [isLoading])
 

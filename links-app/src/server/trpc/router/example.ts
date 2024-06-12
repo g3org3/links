@@ -2,6 +2,7 @@ import PocketBase from 'pocketbase'
 import { z } from 'zod'
 
 import { router, publicProcedure } from 'server/trpc/trpc'
+import { LinksResponse } from 'utils/pbtypes'
 
 const client = new PocketBase('https://pb3.jorgeadolfo.com')
 
@@ -17,7 +18,7 @@ export const exampleRouter = router({
     // console.log(await client.collection('users').listAuthMethods())
     // const u = client.collection('users')
 
-    const result = await client.collection('links').getList(1, 10, {
+    const result = await client.collection('links').getList<LinksResponse>(1, 10, {
       filter: `(url ~ '${input.query}') || (desc ~ '${input.query}')`,
     })
 
@@ -33,9 +34,13 @@ export const exampleRouter = router({
     .query(async ({ input }) => {
       const links = await client
         .collection('links')
-        .getList(!input.cursor ? 1 : input.cursor + 1, !input.cursor ? input.limit * 2 : input.limit, {
-          sort: '-created',
-        })
+        .getList<LinksResponse>(
+          !input.cursor ? 1 : input.cursor + 1,
+          !input.cursor ? input.limit * 2 : input.limit,
+          {
+            sort: '-created',
+          }
+        )
 
       return links
     }),

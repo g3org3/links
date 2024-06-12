@@ -4,6 +4,7 @@
 
 import type PocketBase from 'pocketbase'
 import type { RecordService, RecordListOptions, RecordFullListOptions } from 'pocketbase'
+import { z } from 'zod'
 
 export enum Collections {
   Links = 'links',
@@ -116,7 +117,7 @@ export type TypedPocketBase = PocketBase & {
 
 export const linksSchema = z.object({
   title: z.string().nullish(),
-  tags: z.object().nullish(),
+  tags: z.string().array().nullish(),
   author: z.string().nullish(),
   desc: z.string().nullish(),
   field: z.string().url().nullish(),
@@ -124,7 +125,7 @@ export const linksSchema = z.object({
 })
 
 export const snapshotsSchema = z.object({
-  fetchedat: z.string().min().max().nullish(),
+  fetchedat: z.string().nullish(),
   sprint: z.string().nullish(),
 })
 
@@ -139,9 +140,9 @@ export const ticketsSchema = z.object({
   epic: z.string().nullish(),
   points: z.number().nullish(),
   owner: z.string().nullish(),
-  labels: z.object().nullish(),
-  parents: z.object().nullish(),
-  fetchedat: z.string().min().max().nullish(),
+  labels: z.string().array().nullish(),
+  parents: z.string().array().nullish(),
+  fetchedat: z.string().nullish(),
 })
 
 export const usersSchema = z.object({

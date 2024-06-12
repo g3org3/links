@@ -1,13 +1,15 @@
-import { Record } from 'pocketbase'
 import { create } from 'zustand'
+
+import { LinksResponse } from 'utils/pbtypes'
 
 export interface AppStore {
   search: string | null
   setSearch: (q: string | null) => void
-  links: Record[]
-  nextPage: Record[]
-  addLinks: (l: Record[], isDiff?: boolean) => void
+  links: LinksResponse[]
+  nextPage: LinksResponse[]
+  addLinks: (l: LinksResponse[], isDiff?: boolean) => void
   addPage: () => void
+  reset: () => void
   init: boolean
 }
 
@@ -16,7 +18,7 @@ export const useApp = create<AppStore>((set) => ({
   init: true,
   setSearch: (q) => set({ search: q === '' ? null : q }),
   addLinks: (nextlinks, isDiff) => {
-    set(s => {
+    set((s) => {
       if (s.init) {
         return {
           init: false,
@@ -24,6 +26,7 @@ export const useApp = create<AppStore>((set) => ({
           nextPage: nextlinks.slice(16),
         }
       }
+
       return {
         init: false,
         links: s.links,
@@ -32,7 +35,7 @@ export const useApp = create<AppStore>((set) => ({
     })
   },
   addPage: () => {
-    set(s => {
+    set((s) => {
       if (s.init) {
         return { links: [], nextPage: [] }
       }
@@ -40,6 +43,13 @@ export const useApp = create<AppStore>((set) => ({
       return {
         links: s.links.concat(s.nextPage),
         nextPage: s.nextPage,
+      }
+    })
+  },
+  reset: () => {
+    set(() => {
+      return {
+        init: true,
       }
     })
   },
