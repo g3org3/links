@@ -7,7 +7,7 @@ import { clx } from 'utils/clx'
 import { getFromData } from 'utils/form'
 import { UsersResponse } from 'utils/pbtypes'
 
-const url = 'https://pb3.jorgeadolfo.com'
+const url = 'https://pb.jagc.app'
 
 export default function AuthComponent() {
   const [_, setProfile] = useState<RecordAuthResponse<UsersResponse> | undefined>(undefined)

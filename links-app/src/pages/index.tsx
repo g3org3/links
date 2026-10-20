@@ -45,7 +45,7 @@ const Home: NextPage = () => {
   const isEndReached = data?.pages && data?.pages[0]?.totalPages === data?.pages.length
 
   useEffect(() => {
-    const client = new PocketBase('https://pb3.jorgeadolfo.com')
+    const client = new PocketBase('https://pb.jagc.app')
     client.realtime.subscribe('links', () => {
       queryClient.invalidateQueries(key)
     })

@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { router, publicProcedure } from 'server/trpc/trpc'
 import { LinksResponse } from 'utils/pbtypes'
 
-const client = new PocketBase('https://pb3.jorgeadolfo.com')
+const client = new PocketBase('https://pb.jagc.app')
 
 export const exampleRouter = router({
   hello: publicProcedure.input(z.object({ text: z.string().nullish() }).nullish()).query(({ input }) => {
