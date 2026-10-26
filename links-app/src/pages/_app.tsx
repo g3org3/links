@@ -8,13 +8,18 @@ import { trpc } from 'utils/trpc'
 import '../styles/globals.css'
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  const text = "window.plausible = window.plausible || function(){' '}" + '\n' // +
-  // '{(window.plausible.q = window.plausible.q || []).push(arguments)}'
-
   return (
     <>
-      <Script defer data-domain="links.jorgeadolfo.com" src="https://a.jorgeadolfo.com/script.js" />
-      <Script id="plausible">{text}</Script>
+      <Script
+        defer
+        src="https://api.jagc.app/script.js"
+        data-website-id="aa4c4acb-3222-4b0a-955e-3698dc51faa2"
+      />
+      <Script
+        defer
+        src="https://api.jagc.app/recorder.js"
+        data-website-id="aa4c4acb-3222-4b0a-955e-3698dc51faa2"
+      />
       <ReactQueryDevtools initialIsOpen />
       <Layout>
         <Component {...pageProps} />
